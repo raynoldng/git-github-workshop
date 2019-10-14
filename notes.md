@@ -9,6 +9,11 @@ Outline
 - Using Git
 - Using Github
 - Advanced Workflows
+    - Branching and Merging
+    - Pull Requests
+    - Merge Conflicts
+    - Undoing local changes
+    - Time travelling
 - Quality of Life Hacks
 
 # Install Git and Create a Github Account
@@ -80,3 +85,88 @@ Here are some common and useful bash commands, most of which deal with file and 
 - `Ctrl-c`: cancel everything (use this when in doubt)
 
 To learn more: https://www.unr.edu/research-computing/the-grid/using-the-grid/bash-commands
+
+# Using Git
+
+## Key Concepts
+
+- **Repositories**: Collection of all the files and history of these files
+    - contains all commits 
+    - 1 Repo <=> 1 Project
+    - Can live on a local machine or on a remote server (e.g. Github)
+    - Often shortened to repo
+- Commit : record of files that you have changed since last commit
+    - To add a file to a commit, you need to add it to the staging environment:
+    - `git add <filename>`
+- Staging Environment: (or index) tracks changes that you want to commit
+    - After using the git add command to add all the files you want, package them into a commit with the git commit command
+
+## Commits and the Staging Environment
+
+![Git is all about commitments](images/git-commit-analogy.png)
+
+Working in Git is all about commitments. When you save a file in your editor or create a new file, you move it to the *cardboard box*. 
+
+When you are feeling more confident about your changes, you move them to the the *wooden box*. This happens when you run the `git add <filename>` command. 
+
+Once you are ready to commit, you tend move it to the **safe**, once in there becomes the history of the repo. This happens when you run the `git commit` command.
+
+## How does a Git project look like?
+
+![Git project structure](images/project-structure.png)
+
+- HEAD: a reference to the last commit in the currently checked-out branch
+- MASTER: (traditionally) the main branch in your project
+- Branch: pointer to some commit 
+- Stage (cache): where you place files to commit to the git repo (wooden box)
+- Working Directory: current local directory that you are working on (cardboard box)
+
+## Quick Example
+
+Note: any line that starts with `#` is a comment is not meant to be run in the terminal, in fact your terminal will ignore since it recognizes it as a comment.
+
+```sh
+# This is an example comment
+```
+
+### Step 1: Create a local git repo
+
+```
+# cd to where you want to create your repo e.g. Desktop
+cd Desktop
+# Create a new folder
+mkdir myproject
+git init
+```
+
+Check the status of the repo with `git status`
+
+### Step 2: Add a new file 
+
+```
+touch myfile.txt
+# check that file is there
+ls
+# you should see myfile.txt listed
+
+# check status of the repo with git status
+git status
+```
+
+### Step 3: Add file to staging environment / wooden box
+
+```
+git add myfile.txt
+git status
+```
+
+You can also use `git add .` to add all files with one command
+
+### Step 4: Create a commit / moving to steel safe
+
+TODO
+
+## File Status Lifecycle
+
+
+
