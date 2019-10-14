@@ -1,7 +1,6 @@
 # Intro to Git and Github
 
-This is the companion notes to the slides. Sometimes it is better for the all of
-the information in one neat document.
+This is the companion notes to the slides in this repo
 
 Outline
 - Install git and create a Github account
@@ -165,7 +164,7 @@ Check the status of the repo with `git status`
 
 ### Step 2: Add a new file 
 
-```
+```console
 bash-3.2$ touch raynold.txt
 bash-3.2$ ls
 raynold.txt
@@ -173,7 +172,7 @@ raynold.txt
 
 Check the status of the repo:
 
-```
+```console
 bash-3.2$ git status
 On branch master
 
@@ -187,24 +186,184 @@ Untracked files:
 nothing added to commit but untracked files present (use "git add" to track)
 ```
 
+This means that `raynold.txt` is in the cardboard box.
+
 ### Step 3: Add file to staging environment / wooden box
 
-```
-git add myfile.txt
-git status
+```console
+bash-3.2$ git add raynold.txt
+bash-3.2$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+
+	new file:   raynold.txt
+
 ```
 
 You can also use `git add .` to add all files with one command
 
 ### Step 4: Create a commit / moving to steel safe
 
-TODO
+```console
+bash-3.2$ git commit -m 'This is my first commit'
+[master (root-commit) 918dfdd] This is my first commit
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 raynold.txt
+```
+
+`-m` is the message parameter and you supply the commit message after it. If you
+were to run `git commit`, your terminal will launch an editor which displays a
+summary of the changes in the commit and you can enter the commit message. 
 
 ## File Status Lifecycle
 
+![](images/file-status-lifecycle.png)
 
+## Quck Exercise
+
+1. Add a few more lines to your_name.txt and commit the change 
+2. Create a new file, add some text and commit that change 
+3. The git add <filename> command adds the file to staging, how to undo that?
+   (Hint: study the output of git status)
+
+# Github
+
+What is Github? 
+- Largest web-based git repository hosting service. Hosts remote repositories
+- Allows for code collaboration with anyone online
+- Additional functionality on top of git
+    - UI, documentation, issues, pull requests/review and more
+
+## Uploading your project on Github
+
+### Step 5: Create a new Github repo
+
+![create new repo](images/create-new-repo.png)
+
+### Step 6: Push Master Branch to your Repo
+
+![push](images/git-push.png)
 
 ```console
-foo@bar:~$ whoami
-foo
+bash-3.2$ git remote add origin https://github.com/raynoldng/my-repo.git
+bash-3.2$ git push -u origin master
+# Username and Password prompt
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 226 bytes | 226.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/raynoldng/my-repo.git
+ * [new branch]      master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
 ```
+
+Refresh your Github repo and see your uploaded code!
+
+## Pushing and Pulling
+
+- Pulling: downloading commits that don’t exist on your machine from a remote repository
+- Pushing: adding your local changes to the remote repository
+
+## Remotes
+
+TODO add this in
+
+# Advanced Workflows
+
+If you made it this far you are more or less able to effectively use git and
+Github for personal projects! \o/
+
+Lets now move on to more advanced workflows.
+
+## Branching and Merging 
+
+- Branching: diverge from main line of development and continue to work without messing that main line
+- master: main branch in a project
+- merging: Once you are done with your line of work, you merge it back into master
+
+![](images/branching.png)
+*A branch diverges from the orignal branch*
+![](images/merging.png)
+*Once feature is done, you can merge it back into master*
+
+### Step 7: Create a new branch
+
+To create a new branch: `git checkout -b <branch name>`
+
+```console
+bash-3.2$ git branch | cat
+* master
+bash-3.2$ git checkout -b my-branch
+Switched to a new branch 'my-branch'
+bash-3.2$ git branch | cat
+  master
+* my-branch
+```
+### Step 8: Save changes to new branch
+
+
+
+### Step 8: Save changes to new branch 
+
+- To push changes to a new branch on github: `git push origin <branch name>`
+- `origin`: shorthand for the remote repository URL
+
+```
+# after making changes to raynold.txt
+bash-3.2$ git status
+On branch my-branch
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   raynold.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+bash-3.2$ git add raynold.txt
+bash-3.2$ git status
+On branch my-branch
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   raynold.txt
+
+bash-3.2$ git commit 'add more lines'
+error: pathspec 'add more lines' did not match any file(s) known to git
+bash-3.2$ git push origin my-branch
+Total 0 (delta 0), reused 0 (delta 0)
+remote:
+remote: Create a pull request for 'my-branch' on GitHub by visiting:
+remote:      https://github.com/raynoldng/my-repo/pull/new/my-branch
+remote:
+To https://github.com/raynoldng/my-repo.git
+ * [new branch]      my-branch -> my-branch
+```
+
+You can now see your new branch on Github:
+![](images/github-branch.png)
+
+Let's see how to create a pull request and how that leads to a merge
+
+### Create and approve your Pull Request
+
+![](images/github-self-pr.png)
+
+Click on merge pull request. Can look into the other options in your free time.
+
+![](images/github-self-pr-done.png)
+
+You can see that the branch has been merged in your Github repo:
+
+![](images/updated-master-branch.png)
+
+## Pull Requests
+
+## Merge Conflicts
+
+## Undoing local changes
+
+## Time travelling
