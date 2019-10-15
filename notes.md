@@ -263,14 +263,20 @@ Branch 'master' set up to track remote branch 'master' from 'origin'.
 
 Refresh your Github repo and see your uploaded code!
 
+## Remotes
+
+- Remote: common repository that all team members use to exchange their changes
+- Usually stored on a code hosting service like Github or an internal server
+- `git remote –v` : list the remote connections that you have to other repositories
+- `git remote add <name> <url>` : create a new connection to a remote repo
+- `git remote rm <name>` : remove a remote
+- `git remote rename~ <old-name> <new-name>` : rename a remote
+
 ## Pushing and Pulling
 
 - Pulling: downloading commits that don’t exist on your machine from a remote repository
 - Pushing: adding your local changes to the remote repository
-
-## Remotes
-
-TODO add this in
+- Fetch: download changes but do not merge it in yet
 
 # Advanced Workflows
 
@@ -297,23 +303,65 @@ To create a new branch: `git checkout -b <branch name>`
 ```console
 bash-3.2$ git branch | cat
 * master
-bash-3.2$ git checkout -b my-branch
-Switched to a new branch 'my-branch'
+bash-3.2$ git checkout -b test
+Switched to a new branch 'test'
 bash-3.2$ git branch | cat
   master
-* my-branch
+* test
 ```
 ### Step 8: Save changes to new branch
 
+After making changes to `raynold.txt`
 
+```console
+bash-3.2$ git add raynold.txt
+bash-3.2$ git status
+On branch test
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
 
-### Step 8: Save changes to new branch 
+	modified:   raynold.txt
 
+bash-3.2$ git commit -m 'made changes to raynold.txt'
+[test 952a793] made changes to raynold.txt
+ 1 file changed, 1 insertion(+)
+```
+
+### Step 9 (ver 1): Merge changes into master
+
+- Need to checkout to branch that we are going to merge the branch into
+- If there is no changes on the master (current) since the branch out, we can do
+  a fast forward merge
 - To push changes to a new branch on github: `git push origin <branch name>`
 - `origin`: shorthand for the remote repository URL
 
+```console
+bash-32.$ git checkout master
+Switched to branch 'master'
+Your branch is up to date with 'origin/master'.
+bash-32.$ git merge test
+Updating 918dfdd..f4b6e4f
+Fast-forward
+ raynold.txt | 1 +
+ 1 file changed, 1 insertion(+)
 ```
-# after making changes to raynold.txt
+
+git does a fast forward when you merge a branch that is ahead of your
+checked-out branch [1].
+
+## Creating a Pull Request
+
+About Pull Requests
+- To tell others about changes that you’ve pushed to a branch in a repo on Github
+- After you open a PR, you can discuss and review the potential changes with
+  collaborators and add follow-up comments before are merged into the base
+  branch
+
+### Step 9 (Ver 2): Push changes to a remote branch
+
+Create a branch and commit some changes to it.
+
+```
 bash-3.2$ git status
 On branch my-branch
 Changes not staged for commit:
@@ -348,7 +396,7 @@ You can now see your new branch on Github:
 
 Let's see how to create a pull request and how that leads to a merge
 
-### Create and approve your Pull Request
+### Step 10: Create and approve your Pull Request
 
 ![](images/github-self-pr.png)
 
@@ -360,10 +408,83 @@ You can see that the branch has been merged in your Github repo:
 
 ![](images/updated-master-branch.png)
 
-## Pull Requests
+Note that in this case a merge commit was created even though we could have fast forwarded.
+See [Gtihub Docs](https://help.github.com/en/articles/merging-a-pull-request)
+for more info.
+
+### Step 11: Get changes back on your computer
+
+```console
+bash-3.2$ git checkout master
+Switched to branch 'master'
+Your branch is up to date with 'origin/master'.
+bash-3.2$ git pull
+remote: Enumerating objects: 1, done.
+remote: Counting objects: 100% (1/1), done.
+remote: Total 1 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (1/1), done.
+From https://github.com/raynoldng/my-repo
+   918dfdd..182e7f7  master     -> origin/master
+Updating 918dfdd..182e7f7
+Fast-forward
+ raynold.txt | 1 +
+ 1 file changed, 1 insertion(+)
+```
+
+### Checkouts
+
+- Act of switching between different versions of the target entity
+- `git checkout <branch name/commit>`
+- `git checkout -b <new branch name>` : create a new branch
+- `git checkout <branch/commit> <filename>` : restore previous version of file
 
 ## Merge Conflicts
 
+Merge conflicts happen when you merge branches that have competing commits, and Git needs your help to decide which changes to incorporate in the final merge
+
+### Conflict Free Merge
+
+![conflict free merge](images/conflict-free-merge.png)
+
+### Merge Conflict
+
+![merge conflict](images/merge-conflict.png)
+
+To resolve a merge conflict, you must manually edit the conflicted file to
+select the changes that you want to keep in the final merge. 
+
+Search your repo for conflict markers `<<<<<<<`. 
+
+```
+<<<<<<< HEAD
+Changes from your head branch
+=======
+Changes from the other branch (incoming branch)
+>>>>>>> branch-a
+```
+
+Most IDEs will have tools that help resolve conflicts
+
 ## Undoing local changes
 
+![scope of changes](images/scope-of-changes.png)
+*Scope of changes (e.g. Soft: index and working dir unchanged)*
+
+### Soft Resets
+
+- Rewinds repo to specified commit
+- Left out commits are orphaned and REMOVED next time git performs garbage collection
+- `git reset HEAD~1` : go back one commit
+- `git reset HEAD~2` : go back two commits
+
+### Hard Resets (oof)
+
+- When things go so wrong and you don’t even want to salvage it
+- Removes ALL TRACES of your changes
+- `git reset --hard HEAD`: undoes all changes since last commit
+
 ## Time travelling
+
+
+References
+[1]: https://confluence.atlassian.com/bitbucket/git-fast-forwards-and-branch-management-329977726.html
