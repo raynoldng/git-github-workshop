@@ -13,7 +13,7 @@ Outline
     - Pull Requests
     - Merge Conflicts
     - Undoing local changes
-    - Time travelling
+    - Collaborating with other poeple
 - Quality of Life Hacks
 
 # Install Git and Create a Github Account
@@ -483,7 +483,28 @@ Most IDEs will have tools that help resolve conflicts
 - Removes ALL TRACES of your changes
 - `git reset --hard HEAD`: undoes all changes since last commit
 
-## Time travelling
+## Forking Repos
+
+When you want to contribute to a github repo or use it as your starting point
+
+1. Fork repo
+2. Clone the forked repo
+3. Make and push changes
+4. Make Pull Request
+
+![](]images/fork.png)
+
+### Final Activity: Making your first public PR
+
+1. Go to https://github.com/raynoldng/my-repo
+2. ⭐ it 
+3. Fork it (you will be redirected to your new repo page)
+4. Clone into your local machine
+5. Create a new branch `<your_name>`
+6. Add a new file `<your_name>.txt` and add some text in it
+7. Commit your changes and push it
+8. Make the PR request, I will approve it
+9. Profit
 
 
 References
